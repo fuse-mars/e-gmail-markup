@@ -50,9 +50,12 @@ We have this html content below that we want to send to a user. then we want the
             Dear John, Mark from Google responded to your email in Inbox (john@comapny.com)
         </p>
         <p>
-            MESSAGE DETAILS<br/> Hi John<br/> Your product looks great<br/> but it more expensive than what we use now<br/> and
-            we do not plan to switch.<br/> Sincerely
-            <br/>
+            MESSAGE DETAILS<br/>
+            Hi John<br/>
+            Your product looks great<br/>
+            but it more expensive than what we use now<br/>
+            and we do not plan to switch.<br/>
+            Sincerely
         </p>
     </body>
 </html>
