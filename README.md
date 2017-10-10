@@ -42,8 +42,7 @@ We have this html content below that we want to send to a user. then we want the
                     "url": "https://example.com/ignore/message/?messageId=xyz789",
                     "method": "HttpRequestMethod.GET"
                 }
-                }],
-                "description": "$5 meal at Joe's Diner"
+                }]
             }
         </script>
         <p>
@@ -86,8 +85,7 @@ We have this html content below that we want to send to a user. then we want the
       "url": "https://example.com/ignore/message/?messageId=xyz789",
       "method": "HttpRequestMethod.GET"
     }
-  }],
-  "description": "$5 meal at Joe's Diner"
+  }]
 }
 ```
 
