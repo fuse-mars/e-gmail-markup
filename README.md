@@ -1,6 +1,6 @@
 # Enhanced Gmail Markup
 
-```json-ld
+```json
 {
   "@context": "http://schema.org",
   "@type": "EmailMessage",
