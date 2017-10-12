@@ -40,8 +40,19 @@ jQuery.fn.extend({
 });
 // END Extending jQuery
 
+// START
+// @TODO refactor
+var EGM = {
+    BACKEND: {
+        host: '<host>',
+        endpoint: '/gmail/actions'
+    }
+};
+// END 
+
 (function(window, document, chrome, $, undefined){
     'use strict'
+
     const console = window.console;
 
     // let egmButton = $('button[data-egm-managed="true"]')
@@ -131,6 +142,7 @@ jQuery.fn.extend({
  * @return {Promise<any>}
  */
 function makeJSONLDRequest(jsonld) {
+    // @TODO make a call to the backend (EGM.BACKEND.host)
     return new Promise((resolve, reject) => {
         setTimeout(() => reject({ ok: false }), 1000)
     })
