@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+  
+    "name": "Enhanced Gmail Markup",
+    "description": "",
+    "version": "1.0",
+    "icons": { 
+       "128": "egm_logo.png" 
+    },
+    "browser_action": {
+      "default_icon": "egm_logo.png",
+      "default_popup": "popup.html",
+      "default_title": "Enhanced Gmail Markup"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://mail.google.com/*"],
+        "js": ["jquery.js", "content.js"],
+        "css": ["content.css"]
+      }
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    },    
+    "permissions": [
+        "tabs",
+        "https://mail.google.com/*",
+        "https://ssl.gstatic.com/*"
+    ],
+    "web_accessible_resources" : ["/egm-inject.js"]
+  }
