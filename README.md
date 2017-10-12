@@ -4,13 +4,13 @@
 
 **Google** allows you to place a [custom button](https://developers.google.com/gmail/markup/reference/one-click-action) in front of your email message summary in *Gmail*.
 
-![One Click Actions](https://developers.google.com/gmail/markup/images/actions-one-click-action.png)
+![One Click Actions](https://raw.githubusercontent.com/fuse-mars/e-gmail-markup/master/ignore-person.png)
 
 # Problem
 
 However, it does not allow you to place the same custom button inside the body of the email message in *Gmail*
 
-![One Click Actions](https://developers.google.com/gmail/markup/images/actions-one-click-action.png)
+![One Click Actions](https://raw.githubusercontent.com/fuse-mars/e-gmail-markup/master/ignore-person-message.png)
 
 # Scenario
 
