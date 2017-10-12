@@ -18,33 +18,6 @@ We have this html content below that we want to send to a user. then we want the
 ```html
 <html lang="en">
     <body>
-        <script type="application/ld+json">
-            {
-                "@context": "http://schema.org",
-                "@type": "EmailMessage",
-                "thumbnailUrl": "http://example.com/assets/image.png",
-                "headline": "Response from mark@example.com",
-                "text": "Mark from Google responded to your email in Inbox (jon@comapny.com)",
-                "discussionUrl": "https://mail.google.com/mail/u/1/#inbox/xyz789",
-                "potentialAction": [{
-                "@type": "SaveAction",
-                "name": "Ignore Person",
-                "handler": {
-                    "@type": "HttpActionHandler",
-                    "url": "https://example.com/ignore/person?messageId=xyz789",
-                    "method": "HttpRequestMethod.GET"
-                }
-                },{
-                "@type": "SaveAction",
-                "name": "Ignore Message",
-                "handler": {
-                    "@type": "HttpActionHandler",
-                    "url": "https://example.com/ignore/message/?messageId=xyz789",
-                    "method": "HttpRequestMethod.GET"
-                }
-                }]
-            }
-        </script>
         <p>
             Dear John, Mark from Google responded to your email in Inbox (john@comapny.com)
         </p>
@@ -52,10 +25,24 @@ We have this html content below that we want to send to a user. then we want the
             MESSAGE DETAILS<br/>
             Hi John<br/>
             Your product looks great<br/>
-            but it more expensive than what we use now<br/>
+            but it is more expensive than what we use now<br/>
             and we do not plan to switch.<br/>
             Sincerely
         </p>
+        <hr>
+        <button title="egm button" name="Ignore Person" class="google-button">Ignore Person</button>
+        <script type="application/ld+json" data-egm-managed="true">
+            {
+                "@context": "http://schema.org",
+                "@type": "SaveAction",
+                "name": "Ignore Person",
+                "handler": {
+                    "@type": "HttpActionHandler",
+                    "url": "https://www.youtube.com/watch?v=rGdKmF2UzSc",
+                    "method": "HttpRequestMethod.GET"
+                }
+            }
+        </script>
     </body>
 </html>
 ```
@@ -63,29 +50,14 @@ We have this html content below that we want to send to a user. then we want the
 * Content of interest
 ```json
 {
-  "@context": "http://schema.org",
-  "@type": "EmailMessage",
-  "thumbnailUrl": "http://example.com/assets/image.png",
-  "headline": "Response from mark@example.com",
-  "text": "Mark from Google responded to your email in Inbox (jon@comapny.com)",
-  "discussionUrl": "https://mail.google.com/mail/u/1/#inbox/xyz789",
-  "potentialAction": [{
+    "@context": "http://schema.org",
     "@type": "SaveAction",
     "name": "Ignore Person",
     "handler": {
-      "@type": "HttpActionHandler",
-      "url": "https://example.com/ignore/person?messageId=xyz789",
-      "method": "HttpRequestMethod.GET"
+        "@type": "HttpActionHandler",
+        "url": "https://www.youtube.com/watch?v=rGdKmF2UzSc",
+        "method": "HttpRequestMethod.GET"
     }
-  },{
-    "@type": "SaveAction",
-    "name": "Ignore Message",
-    "handler": {
-      "@type": "HttpActionHandler",
-      "url": "https://example.com/ignore/message/?messageId=xyz789",
-      "method": "HttpRequestMethod.GET"
-    }
-  }]
 }
 ```
 
