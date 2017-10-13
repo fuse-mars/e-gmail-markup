@@ -228,8 +228,32 @@ function extractEGMActions($, message) {
     }).filter(a => a.jsonld)
 }
 
+/**
+ * find a button or anchor that is managed by egm
+ * @TODO refactor
+ * @param {jQuery} $ 
+ * @param {string} name 
+ */
 function findEGMButton($, name) {
-    return $(`button[title="egm button"][name="${name}"]`)
+    let buttonList = $(`button[title="egm button"]`)
+    let button = buttonList.filter((i, el) => $(el).attr('name') && $(el).attr('name').includes(name))[0]
+    let aList = $(`a[title="egm button"]`)
+    let a = aList.filter((i, el) => $(el).attr('name') && $(el).attr('name').includes(name))[0]
+    
+    if(button) {
+        let googleName = $(button).attr('name')
+        button = $(`button[title="egm button"][name="${googleName}"]`)
+    }
+    if(a) {
+        let googleName = $(a).attr('name')
+        a  = $(`a[title="egm button"][name="${googleName}"]`)        
+    }
+
+    console.log('START findEGMButton')
+    console.log(button)
+    console.log(a)
+    console.log('END findEGMButton')
+    return button || a;
 }
 /**
  * 

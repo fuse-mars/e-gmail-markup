@@ -1,14 +1,16 @@
 /* source: Gmail style */
+a.egm-google-button,
 button.egm-google-button {
 	outline: none !important;
+	text-decoration: none !important;
 	display: inline-block;
 	min-width: 54px;
 	border: 1px solid #dcdcdc;
 	border-radius: 2px;
 	text-align: center;
-	color: #444;
+	color: #444 !important;
 	font-size: 11px;
-	font-weight: bold;
+	font-weight: bold !important;
 	height: 20px;
 	padding: 0 8px;
 	margin: 0;
@@ -23,9 +25,16 @@ button.egm-google-button {
 	cursor: default;
 }
 
+a.egm-google-button {
+	vertical-align: bottom;
+    line-height: 1.5em;
+    height: 18px;
+}
+
 /* button.google-button:hover {
 	cursor: pointer;
 } */
+a.egm-google-button.succedded > img,
 button.egm-google-button.succedded > img {
 	margin-left: 5px;
 	display: inline-block;
@@ -33,12 +42,14 @@ button.egm-google-button.succedded > img {
 	width: 7px;
 	height: 7px;
 }
+a.egm-google-button.failed,
 button.egm-google-button.failed {
 	background-color: #fff1a8;
 	background-image: -webkit-linear-gradient(top, rgb(255, 241, 168), rgb(255, 241, 168));
 }
 
 
+a.google-T-I,
 button.google-T-I {
 	
 		-webkit-border-radius: 2px;
@@ -56,13 +67,14 @@ button.google-T-I {
 		padding: 0 8px;
 }
 
+a.egm-status,
 button.egm-status {
 	margin-top: -6px;
     min-width: 32px;
     height: inherit;
 	margin-right: 1em;
     background-image: -webkit-linear-gradient(top, #009688, #009688);
-    color: white;
+    color: white !important;
     border-color: #009688;
     background-color: #009688;
 }
