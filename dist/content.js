@@ -219,11 +219,13 @@ function makeJSONLDRequest($, jsonld) {
 function extractEGMActions($, message) {
     // console.info(gmailMessage)               
     // let gmailHtml = createGmailHtml($, gmailMessage)
-    let script = extractJSONLDScript(message)
+    let scripts = extractJSONLDScripts(message)
     // let action = extractJSONLDjson($, script)
-    let jsonld = extractJSONLDjson($, script)
-    let button = findEGMButton($, jsonld['name']) // get this from gmail page DOM
-    return [{ jsonld, button }].filter(a => a.jsonld); 
+    return scripts.map(script => {
+        let jsonld = extractJSONLDjson($, script)
+        let button = findEGMButton($, jsonld['name']) // get this from gmail page DOM
+        return { jsonld, button }; 
+    }).filter(a => a.jsonld)
 }
 
 function findEGMButton($, name) {
@@ -245,12 +247,28 @@ function extractJSONLDjson($, script) {
  * @param {string} action
  * @return {jQuery} Script DOM element
  */
-function extractJSONLDScript(gmailMessage) {
-    let scripts = gmailMessage.match(/<script([\s\S]*)script>/g);
+function extractJSONLDScripts(gmailMessage) {
+    
+    // scriptHolder =  "<script ..[ anything including other scripts (<script ... script>) in between ].. script>""
+    let scriptHolder = gmailMessage.match(/<script([\s\S]*)<\/script>/g);
+    
+    // START make sure we have a script
+    if(!scriptHolder) { return [] }
+    scriptHolder = scriptHolder[0]
+    if(!scriptHolder) { return [] }
+    // END make sure we have a script
+    
+    // scripts = Array[ "....[includes only one <script ].... script>" ]
+    // filter removes entries with empty string
+    let scripts = scriptHolder.split(/<\/script>/g).filter(s => s).map(s => s+'</script>')
+    
+    // scripts = Array[ "<script....[ includes only content of one script ].... script>" ]
+    scripts = scripts.map(script => script.match(/<script([\s\S]*)<\/script>/g)[0])
+
     console.log('START');
     console.log(scripts);
     console.log('END');
-    return scripts.find(s => s.includes('data-egm-managed="true"') && s.includes('type="application/ld+json"'))
+    return scripts.filter(s => s.includes('data-egm-managed="true"') && s.includes('type="application/ld+json"'))
 }
 /**
  * 
