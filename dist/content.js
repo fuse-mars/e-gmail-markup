@@ -44,8 +44,8 @@ jQuery.fn.extend({
 // @TODO refactor
 var EGM = {
     BACKEND: {
-        host: '<host>',
-        endpoint: '/gmail/actions'
+        host: 'https://06be5d8f.ngrok.io',
+        endPoint: '/gmail/actions'
     }
 };
 // END 
@@ -94,24 +94,25 @@ var EGM = {
                             `)
                             // @TODO send JSON-LD based request to backend                     
                             console.log('START');
-                            makeJSONLDRequest(jsonld)
+                            makeJSONLDRequest($, jsonld)
                             .then(res => {
-                                $(this).html(initText)
+                                console.log(res)
+                                $(this).html(`
+                                    ${initText}
+                                    <img class="" src="https://mail.google.com/mail/u/0/images/cleardot.gif" alt="">
+                                `)
+                                $(this).removeClass('failed')
                                 $(this).addClass('succedded')
                             })
                             .catch(e => {
+                                console.log(e)                          
                                 console.log('END');                            
                                 $(this).addClass('failed')
                                 $(this).html(`
                                     ${initText}
                                     &nbsp; <img src="https://ssl.gstatic.com/ui/v1/icons/mail/sma/problem2.png">
                                 `)
-                                $(this).disable(false)
-                                // setTimeout(() => {
-                                //     $(this).removeClass('failed')
-                                //     $(this).html(initText)
-                                //     $(this).disable(false)
-                                // }, 2500)                         
+                                $(this).disable(false)                     
                             })
                         })
                     })    
@@ -138,13 +139,17 @@ var EGM = {
 // .raw_message
 /**
  * 
+ * @param {jQuery} $
  * @param {JSON} jsonld
  * @return {Promise<any>}
  */
-function makeJSONLDRequest(jsonld) {
+function makeJSONLDRequest($, jsonld) {
     // @TODO make a call to the backend (EGM.BACKEND.host)
     return new Promise((resolve, reject) => {
-        setTimeout(() => reject({ ok: false }), 1000)
+        // setTimeout(() => reject({ ok: false }), 1000)
+        return $.post(`${EGM.BACKEND.host}${EGM.BACKEND.endPoint}`, jsonld)
+        .done(resolve)
+        .fail(reject)
     })
 }
 
