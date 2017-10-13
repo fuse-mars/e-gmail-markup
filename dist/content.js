@@ -76,47 +76,19 @@ var EGM = {
             fetchOriginalMessage(url).then(data => {
                 let gmailMessage = extractGmailHTMLMessage($, data)
                 if(gmailMessage) {
+
+                    // @TODO show EGM button "EGM Processing"
+                    // showEGMStatusButton($, 'EGM Processing ...')
                     let actions = extractEGMActions($, gmailMessage)
+                    if(actions.length > 0) {
+                        // @TODO show EGM button "EGM Managed"
+                        showEGMStatusButton($, 'EGM Managed')                       
+                    }
 
                     actions.forEach(({ jsonld, button }) => {
                         console.info(jsonld, button)
-                        // @TODO add a listen on all buttons
-                        let initText = button.html()                        
-                        button.addClass('egm-google-button')
-                        button.on('click', function(event) {
-                            event.preventDefault();
-                            console.log(event);
-                            // show loading icon in the button
-                            $(this).disable(true)
-                            $(this).html(`
-                                ${initText}
-                                &nbsp; <img src="https://ssl.gstatic.com/ui/v1/icons/mail/sma/loading2.gif">
-                            `)
-                            // @TODO send JSON-LD based request to backend                     
-                            console.log('START');
-                            makeJSONLDRequest($, jsonld)
-                            .then(res => {
-                                console.log(res)
-                                $(this).html(`
-                                    ${initText}
-                                    <img class="" src="https://mail.google.com/mail/u/0/images/cleardot.gif" alt="">
-                                `)
-                                $(this).removeClass('failed')
-                                $(this).addClass('succedded')
-                            })
-                            .catch(e => {
-                                console.log(e)                          
-                                console.log('END');                            
-                                $(this).addClass('failed')
-                                $(this).html(`
-                                    ${initText}
-                                    &nbsp; <img src="https://ssl.gstatic.com/ui/v1/icons/mail/sma/problem2.png">
-                                `)
-                                $(this).disable(false)                     
-                            })
-                        })
+                        attachButtonEventListener($, button, jsonld)
                     })    
-
                 }  
             })
             .catch(e => {
@@ -135,6 +107,89 @@ var EGM = {
     });
 
 })(window, document, chrome, jQuery);
+
+/**
+ * Add a listener that will be triggered once the user clicks on the provided "button"
+ * @param {jQuery} $ 
+ * @param {jQuery<button>} button 
+ * @param {jSON} jsonld 
+ */
+function attachButtonEventListener($, button, jsonld) {
+    // @TODO add a listen on all buttons
+    let initText = button.html()                        
+    button.addClass('egm-google-button')
+    button.off('click').on('click', function(event) {
+        event.preventDefault();
+        showButtonLoadingUI($, this, initText)
+        // @TODO send JSON-LD based request to backend                     
+        makeJSONLDRequest($, jsonld)
+        .then(res => showButtonSuccessUI($, this, initText, res))
+        .catch(e => showButtonErrorUI($, this, initText, e))
+    
+    })
+}
+/**
+ * 
+ * @param {jQuery} $ 
+ * @param {jQuery<button>} button 
+ * @param {string} initText 
+ */
+function showButtonLoadingUI($, button, initText) {
+    // START show loading UI        
+    // show loading icon in the button
+    $(button).disable(true)
+    $(button).html(`
+        ${initText}
+        &nbsp; <img src="https://ssl.gstatic.com/ui/v1/icons/mail/sma/loading2.gif">
+    `)
+    // END show loading UI
+}
+/**
+ * 
+ * @param {jQuery} $ 
+ * @param {jQuery<button>} this 
+ * @param {string} initText
+ * @param {any} res
+ */
+function showButtonSuccessUI($, button, initText, res) {
+    // START show success UI
+    console.log(res)
+    $(button).html(`
+        ${initText}
+        <img class="" src="https://mail.google.com/mail/u/0/images/cleardot.gif" alt="">
+    `)
+    $(button).removeClass('failed')
+    $(button).addClass('succedded')
+    // END show success UI
+}
+/**
+ * 
+ * @param {jQuery} $ 
+ * @param {jQuery<button>} this 
+ * @param {string} initText
+ * @param {any} e
+ */
+function showButtonErrorUI($, button, initText, e) {
+    // START show error UI
+    console.log(e)                          
+    $(button).addClass('failed')
+    $(button).html(`
+        ${initText}
+        &nbsp; <img src="https://ssl.gstatic.com/ui/v1/icons/mail/sma/problem2.png">
+    `)
+    $(button).disable(false)  
+    // END show error UI
+}
+
+/**
+ * 
+ * @param {jQuery} $ 
+ * @param {string} text 
+ */
+function showEGMStatusButton($, text) {
+    $('<td class="gH"><button class="egm-google-button google-T-I egm-status">EGM Managed</button></td>')
+    .insertBefore('table .gH.acX')
+}
 
 // .raw_message
 /**
@@ -192,6 +247,9 @@ function extractJSONLDjson($, script) {
  */
 function extractJSONLDScript(gmailMessage) {
     let scripts = gmailMessage.match(/<script([\s\S]*)script>/g);
+    console.log('START');
+    console.log(scripts);
+    console.log('END');
     return scripts.find(s => s.includes('data-egm-managed="true"') && s.includes('type="application/ld+json"'))
 }
 /**
