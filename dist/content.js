@@ -220,6 +220,8 @@ function extractEGMActions($, message) {
     // console.info(gmailMessage)               
     // let gmailHtml = createGmailHtml($, gmailMessage)
     let scripts = extractJSONLDScripts(message)
+    console.log(scripts)
+    
     // let action = extractJSONLDjson($, script)
     return scripts.map(script => {
         let jsonld = extractJSONLDjson($, script)
@@ -249,10 +251,11 @@ function findEGMButton($, name) {
         a  = $(`a[title="egm button"][name="${googleName}"]`)        
     }
 
-    console.log('START findEGMButton')
-    console.log(button)
-    console.log(a)
-    console.log('END findEGMButton')
+    // console.log('START findEGMButton')
+    // console.log(button)
+    // console.log(a)
+    // console.log(aList)
+    // console.log('END findEGMButton')
     return button || a;
 }
 /**
@@ -288,12 +291,18 @@ function extractJSONLDScripts(gmailMessage) {
     
     // scripts = Array[ "<script....[ includes only content of one script ].... script>" ]
     scripts = scripts.map(script => script.match(/<script([\s\S]*)<\/script>/g)[0])
-
-    console.log('START');
-    console.log(scripts);
-    console.log('END');
+    scripts = cleanup(scripts)
+    // console.log('START');
+    // console.log(scripts);
+    // console.log('END');
     return scripts.filter(s => s.includes('data-egm-managed="true"') && s.includes('type="application/ld+json"'))
 }
+
+// sometimes gmail adds 3D chars to the orginal html 
+function cleanup(scripts) {
+    return scripts.map(script => script.replace(/3D/g, ''))
+}
+
 /**
  * 
  * @param {jQuery} $ 
