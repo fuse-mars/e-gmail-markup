@@ -225,30 +225,30 @@ function extractEGMActions($, message) {
     // let action = extractJSONLDjson($, script)
     return scripts.map(script => {
         let jsonld = extractJSONLDjson($, script)
-        let button = findEGMButton($, jsonld['name']) // get this from gmail page DOM
+        let button = findEGMButton($, jsonld['instrument']) // get this from gmail page DOM
         return { jsonld, button }; 
-    }).filter(a => a.jsonld)
+    }).filter(a => a.jsonld && a.button)
 }
 
 /**
  * find a button or anchor that is managed by egm
  * @TODO refactor
  * @param {jQuery} $ 
- * @param {string} name 
+ * @param {string} id id of the button 
  */
-function findEGMButton($, name) {
+function findEGMButton($, id) {
     let buttonList = $(`button[title="egm button"]`)
-    let button = buttonList.filter((i, el) => $(el).attr('name') && $(el).attr('name').includes(name))[0]
+    let button = buttonList.filter((i, el) => $(el).attr('id') && $(el).attr('id').includes(id))[0]
     let aList = $(`a[title="egm button"]`)
-    let a = aList.filter((i, el) => $(el).attr('name') && $(el).attr('name').includes(name))[0]
+    let a = aList.filter((i, el) => $(el).attr('id') && $(el).attr('id').includes(id))[0]
     
     if(button) {
-        let googleName = $(button).attr('name')
-        button = $(`button[title="egm button"][name="${googleName}"]`)
+        let googleId = $(button).attr('id')
+        button = $(`button[title="egm button"][id="${googleId}"]`)
     }
     if(a) {
-        let googleName = $(a).attr('name')
-        a  = $(`a[title="egm button"][name="${googleName}"]`)        
+        let googleId = $(a).attr('id')
+        a  = $(`a[title="egm button"][id="${googleId}"]`)        
     }
 
     // console.log('START findEGMButton')
@@ -298,9 +298,12 @@ function extractJSONLDScripts(gmailMessage) {
     return scripts.filter(s => s.includes('data-egm-managed="true"') && s.includes('type="application/ld+json"'))
 }
 
-// sometimes gmail adds 3D chars to the orginal html 
+// sometimes gmail adds [3D, =\n] chars to the orginal html 
 function cleanup(scripts) {
-    return scripts.map(script => script.replace(/3D/g, ''))
+    scripts = scripts.map(script => script.replace(/3D/g, ''))
+    // remove = followed by newline
+    scripts = scripts.map(script => script.replace(/=\n/g, ''))
+     return scripts;
 }
 
 /**
