@@ -44,7 +44,7 @@ jQuery.fn.extend({
 // @TODO refactor
 var EGM = {
     BACKEND: {
-        host: 'https://06be5d8f.ngrok.io',
+        host: 'https://5601d755.ngrok.io',
         endPoint: '/gmail/actions'
     }
 };
